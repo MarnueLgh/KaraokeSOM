@@ -849,3 +849,116 @@ ver_letra_cancion() {
 
     registrar_evento "INFO" "consultó letra" "$titulo - $artista"
 }
+
+# ============================================================
+# Vistas de catálogo según rol
+# Admin ve letra_archivo, usuario normal no
+# ============================================================
+
+es_admin_karaoke() {
+    id -nG "$USER" | grep -qw "karaoke_admins"
+}
+
+mostrar_catalogo_publico() {
+    awk -F, 'BEGIN {OFS=","}
+    {
+        print $1,$2,$3,$4,$5,$6,$7
+    }' "$CATALOGO" | column -t -s,
+}
+
+mostrar_catalogo_admin() {
+    column -t -s, "$CATALOGO"
+}
+
+mostrar_catalogo() {
+    ui_titulo "Catálogo de canciones"
+
+    if es_admin_karaoke; then
+        mostrar_catalogo_admin
+    else
+        mostrar_catalogo_publico
+    fi
+
+    registrar_evento "INFO" "consultó catálogo" "-"
+}
+
+buscar_cancion() {
+    read -rp "Buscar por título, artista, álbum o género: " termino
+
+    if [[ -z "$termino" ]]; then
+        echo "No escribiste ningún término de búsqueda."
+        return
+    fi
+
+    ui_titulo "Resultados de búsqueda"
+
+    if es_admin_karaoke; then
+        awk -F, -v termino="$termino" 'BEGIN {
+            OFS=","
+            termino=tolower(termino)
+        }
+        NR==1 {
+            print
+            next
+        }
+        {
+            texto=tolower($2" "$3" "$4" "$5)
+            if (index(texto, termino) > 0) {
+                print
+            }
+        }' "$CATALOGO" | column -t -s,
+    else
+        awk -F, -v termino="$termino" 'BEGIN {
+            OFS=","
+            termino=tolower(termino)
+        }
+        NR==1 {
+            print $1,$2,$3,$4,$5,$6,$7
+            next
+        }
+        {
+            texto=tolower($2" "$3" "$4" "$5)
+            if (index(texto, termino) > 0) {
+                print $1,$2,$3,$4,$5,$6,$7
+            }
+        }' "$CATALOGO" | column -t -s,
+    fi
+
+    registrar_evento "INFO" "buscó canción" "$termino"
+}
+
+ver_letra_cancion() {
+    mostrar_catalogo
+    echo
+    read -rp "Escribe el ID de la canción para ver su letra: " id
+
+    if ! [[ "$id" =~ ^[0-9]+$ ]]; then
+        echo "ID inválido."
+        return
+    fi
+
+    local linea titulo artista letra_archivo ruta_letra
+
+    linea=$(awk -F, -v id="$id" '$1 == id {print; exit}' "$CATALOGO")
+
+    if [[ -z "$linea" ]]; then
+        echo "No existe una canción con ese ID."
+        return
+    fi
+
+    titulo=$(echo "$linea" | awk -F, '{print $2}')
+    artista=$(echo "$linea" | awk -F, '{print $3}')
+    letra_archivo=$(echo "$linea" | awk -F, '{print $8}')
+    ruta_letra="$BASE_DIR/$letra_archivo"
+
+    if [[ ! -f "$ruta_letra" ]]; then
+        echo "No hay letra registrada para esta canción."
+        registrar_evento "INFO" "intentó ver letra no disponible" "$titulo - $artista"
+        return
+    fi
+
+    ui_titulo "Letra: $titulo - $artista"
+    cat "$ruta_letra"
+
+    registrar_evento "INFO" "consultó letra" "$titulo - $artista"
+}
