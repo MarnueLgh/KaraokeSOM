@@ -1,0 +1,10 @@
+Letra de ejemplo para la canción con ID 18.
+
+Esta letra es ficticia y se usa únicamente para probar
+el sistema de karaoke multiusuario.
+
+[Verso]
+Texto de prueba para simular la letra de la canción.
+
+[Coro]
+Texto de prueba para simular el coro de la canción.

@@ -1,0 +1,21 @@
+id,titulo,artista,album,genero,duracion,estado,letra_archivo
+1,Hotline Bling,Drake,Views,Hip-Hop,04:27,activo,lyrics/1.txt
+2,One Dance,Drake,Views,Hip-Hop,02:53,activo,lyrics/2.txt
+3,Last Nite,The Strokes,Is This It,Indie Rock,03:13,activo,lyrics/3.txt
+4,Reptilia,The Strokes,Room on Fire,Indie Rock,03:59,activo,lyrics/4.txt
+5,Sorry,Justin Bieber,Purpose,Pop,03:20,activo,lyrics/5.txt
+6,Stay,Justin Bieber,Justice,Pop,02:21,activo,lyrics/6.txt
+7,Don't Start Now,Dua Lipa,Future Nostalgia,Pop,03:03,activo,lyrics/7.txt
+8,Levitating,Dua Lipa,Future Nostalgia,Pop,03:23,activo,lyrics/8.txt
+9,Dakiti,Bad Bunny,El Último Tour Del Mundo,Reggaeton,03:25,activo,lyrics/9.txt
+10,Me Porto Bonito,Bad Bunny,Un Verano Sin Ti,Reggaeton,02:58,activo,lyrics/10.txt
+11,Monaco,Bad Bunny,Nadie Sabe Lo Que Va A Pasar Mañana,Trap,04:27,activo,lyrics/11.txt
+12,Todo de Ti,Rauw Alejandro,Vice Versa,Synth-Pop,03:19,activo,lyrics/12.txt
+13,Diluvio,Rauw Alejandro,Cosa Nuestra,Reggaeton,03:18,activo,lyrics/13.txt
+14,Luna,Feid,Ferxxocalipsis,Reggaeton,03:16,activo,lyrics/14.txt
+15,Classy 101,Feid,Ferxxocalipsis,Reggaeton,03:15,activo,lyrics/15.txt
+16,Ella Baila Sola,Peso Pluma,Génesis,Regional Mexicano,02:44,activo,lyrics/16.txt
+17,Lady Gaga,Peso Pluma,Génesis,Regional Mexicano,03:32,activo,lyrics/17.txt
+18,Blinding Lights,The Weeknd,After Hours,Synth-Pop,03:20,activo,lyrics/18.txt
+19,Starboy,The Weeknd,Starboy,R&B,03:50,inactivo,lyrics/19.txt
+20,Niña Bonita,Feid & Sean Paul,Sixdo,Reggaeton,03:21,activo,lyrics/20.txt

@@ -1,0 +1,10 @@
+logs/*.log
+locks/*.lock
+reports/*.csv
+reports/*.txt
+*.bak
+*.tmp
+*.swp
+*.vdi
+*.vbox
+*.iso
