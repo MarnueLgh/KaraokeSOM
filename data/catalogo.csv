@@ -19,3 +19,4 @@ id,titulo,artista,album,genero,duracion,estado,letra_archivo
 18,Blinding Lights,The Weeknd,After Hours,Synth-Pop,03:20,activo,lyrics/18.txt
 19,Starboy,The Weeknd,Starboy,R&B,03:50,inactivo,lyrics/19.txt
 20,Niña Bonita,Feid & Sean Paul,Sixdo,Reggaeton,03:21,activo,lyrics/20.txt
+21,Hola,Anuar,Anuar,SOM,01:01,activo
