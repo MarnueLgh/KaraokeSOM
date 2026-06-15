@@ -4,6 +4,8 @@ source /srv/karaoke/lib/funciones.sh
 
 mkdir -p "$REPORTS"
 
+HISTORIAL="$BASE_DIR/playback/historial_reproduccion.csv"
+
 {
     echo "titulo,artista,total"
     tail -n +2 "$COLA" | awk -F, 'NF>=8 {clave=$6","$7; conteo[clave]++} END {for (c in conteo) print c","conteo[c]}' | sort -t, -k3,3nr
@@ -40,6 +42,24 @@ mkdir -p "$REPORTS"
 } > "$REPORTS/reporte_letras.csv"
 
 {
+    echo "titulo,artista,reproducciones,tiempo_total_seg,tiempo_total_min"
+
+    if [[ -f "$HISTORIAL" ]]; then
+        tail -n +2 "$HISTORIAL" | awk -F, '
+        NF>=11 {
+            clave=$7","$8
+            reproducciones[clave]++
+            tiempo[clave]+=$10
+        }
+        END {
+            for (c in reproducciones) {
+                printf "%s,%d,%d,%.2f\n", c, reproducciones[c], tiempo[c], tiempo[c]/60
+            }
+        }' | sort -t, -k4,4nr
+    fi
+} > "$REPORTS/reporte_tiempo_reproduccion.csv"
+
+{
     echo "Reporte general del sistema"
     echo "Fecha de generación: $(date '+%F %T')"
     echo
@@ -49,12 +69,24 @@ mkdir -p "$REPORTS"
     echo "Total de eventos en bitácora: $(wc -l < "$LOG")"
     echo "Total de archivos de letras: $(find "$BASE_DIR/lyrics" -type f -name '*.txt' 2>/dev/null | wc -l)"
     echo "Total de palabras en letras: $(find "$BASE_DIR/lyrics" -type f -name '*.txt' -exec cat {} + 2>/dev/null | wc -w)"
+
+    if [[ -f "$HISTORIAL" ]]; then
+        echo "Total de reproducciones simuladas: $(tail -n +2 "$HISTORIAL" | wc -l)"
+        echo "Tiempo total reproducido en segundos: $(tail -n +2 "$HISTORIAL" | awk -F, '{s+=$10} END {print s+0}')"
+        echo "Tiempo total reproducido en minutos: $(tail -n +2 "$HISTORIAL" | awk -F, '{s+=$10} END {printf "%.2f", s/60}')"
+    else
+        echo "Total de reproducciones simuladas: 0"
+        echo "Tiempo total reproducido en segundos: 0"
+        echo "Tiempo total reproducido en minutos: 0.00"
+    fi
+
     echo
     echo "Archivos generados:"
     echo "- reporte_canciones.csv"
     echo "- reporte_usuarios.csv"
     echo "- reporte_reproducidas.csv"
     echo "- reporte_letras.csv"
+    echo "- reporte_tiempo_reproduccion.csv"
     echo "- reporte_general.txt"
 } > "$REPORTS/reporte_general.txt"
 

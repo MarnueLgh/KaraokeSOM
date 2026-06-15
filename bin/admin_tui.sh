@@ -47,11 +47,13 @@ menu_admin() {
     echo -e "${gris}     │${reset_color} ${azul}6${reset_color}. Ver letra de canción                                    ${gris}│${reset_color}"
     echo -e "${gris}     │${reset_color} ${azul}7${reset_color}. Editar letra de canción                                 ${gris}│${reset_color}"
     echo -e "${gris}     │${reset_color} ${azul}8${reset_color}. Ver cola                                                ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color} ${azul}9${reset_color}. Marcar canción como reproducida                         ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color} ${azul}10${reset_color}. Generar reportes                                       ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color} ${azul}11${reset_color}. Ver reportes existentes                                ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color} ${azul}12${reset_color}. Ver bitácoras                                          ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color} ${azul}13${reset_color}. Salir                                                  ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}9${reset_color}. Ver reproducción actual                                 ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}10${reset_color}. Reproducir siguiente canción                           ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}11${reset_color}. Marcar canción como reproducida                         ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}12${reset_color}. Generar reportes                                       ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}13${reset_color}. Ver reportes existentes                                ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}14${reset_color}. Ver bitácoras                                          ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}15${reset_color}. Salir                                                  ${gris}│${reset_color}"
     dibujar_footer
     read -rp "        Selecciona una opción: " opcion
 }
@@ -61,62 +63,25 @@ while true; do
     clear
 
     case "$opcion" in
-        1)
-            mostrar_catalogo
-            pausa
-            ;;
-        2)
-            buscar_cancion
-            pausa
-            ;;
-        3)
-            agregar_cancion
-            pausa
-            ;;
-        4)
-            desactivar_cancion
-            pausa
-            ;;
-        5)
-            eliminar_cancion
-            pausa
-            ;;
-        6)
-            ver_letra_cancion
-            pausa
-            ;;
-        7)
-            editar_letra_cancion
-            pausa
-            ;;
-        8)
-            ver_cola
-            pausa
-            ;;
-        9)
-            marcar_reproducida
-            pausa
-            ;;
-        10)
-            /srv/karaoke/bin/generar_reportes.sh
-            pausa
-            ;;
-        11)
-            ver_reportes
-            pausa
-            ;;
-        12)
-            ver_logs
-            pausa
-            ;;
-        13|q|Q)
+        1) mostrar_catalogo; pausa ;;
+        2) buscar_cancion; pausa ;;
+        3) agregar_cancion; pausa ;;
+        4) desactivar_cancion; pausa ;;
+        5) eliminar_cancion; pausa ;;
+        6) ver_letra_cancion; pausa ;;
+        7) editar_letra_cancion; pausa ;;
+        8) ver_cola; pausa ;;
+        9) ver_reproduccion_actual; pausa ;;
+        10) reproducir_siguiente_cancion; pausa ;;
+        11) marcar_reproducida; pausa ;;
+        12) /srv/karaoke/bin/generar_reportes.sh; pausa ;;
+        13) ver_reportes; pausa ;;
+        14) ver_logs; pausa ;;
+        15|q|Q)
             registrar_evento "ADMIN" "salió del panel administrativo" "-"
             cleanup_terminal
             exit 0
             ;;
-        *)
-            echo "Opción inválida."
-            pausa
-            ;;
+        *) echo "Opción inválida."; pausa ;;
     esac
 done

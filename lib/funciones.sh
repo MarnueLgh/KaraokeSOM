@@ -295,3 +295,94 @@ editar_letra_cancion() {
     echo "Letra actualizada: $titulo - $artista"
     registrar_evento "ADMIN" "editó letra" "$titulo - $artista"
 }
+
+duracion_a_segundos() {
+    local duracion="$1"
+    local minutos segundos
+
+    if [[ "$duracion" =~ ^([0-9]+):([0-9]{2})$ ]]; then
+        minutos="${BASH_REMATCH[1]}"
+        segundos="${BASH_REMATCH[2]}"
+        echo $((10#$minutos * 60 + 10#$segundos))
+    else
+        echo 0
+    fi
+}
+
+ver_reproduccion_actual() {
+    local actual="$BASE_DIR/playback/reproduccion_actual.csv"
+
+    if [[ ! -f "$actual" || $(wc -l < "$actual") -le 1 ]]; then
+        echo "No hay canción en reproducción."
+    else
+        column -t -s, "$actual"
+    fi
+}
+
+reproducir_siguiente_cancion() {
+    local actual="$BASE_DIR/playback/reproduccion_actual.csv"
+    local linea id_cola usuario id_cancion titulo artista estado duracion duracion_seg fecha hora tmp
+
+    if [[ -f "$actual" && $(wc -l < "$actual") -gt 1 ]]; then
+        echo "Ya hay una canción en reproducción:"
+        echo
+        column -t -s, "$actual"
+        return
+    fi
+
+    exec 200>"$LOCK"
+    flock -x 200
+
+    linea=$(tail -n +2 "$COLA" | awk -F, '$8=="pendiente" {print; exit}')
+
+    if [[ -z "$linea" ]]; then
+        echo "No hay canciones pendientes en la cola."
+        flock -u 200
+        return
+    fi
+
+    id_cola=$(echo "$linea" | awk -F, '{print $1}')
+    usuario=$(echo "$linea" | awk -F, '{print $4}')
+    id_cancion=$(echo "$linea" | awk -F, '{print $5}')
+    titulo=$(echo "$linea" | awk -F, '{print $6}')
+    artista=$(echo "$linea" | awk -F, '{print $7}')
+
+    duracion=$(awk -F, -v id="$id_cancion" '$1 == id {print $6; exit}' "$CATALOGO")
+    duracion_seg=$(duracion_a_segundos "$duracion")
+
+    if [[ "$duracion_seg" -le 0 ]]; then
+        echo "No se pudo calcular la duración de la canción."
+        flock -u 200
+        return
+    fi
+
+    tmp=$(mktemp)
+
+    awk -F, -v id="$id_cola" 'BEGIN {OFS=","}
+NR==1 {print; next}
+$1==id && $8=="pendiente" {$8="reproduciendo"}
+{print}
+' "$COLA" > "$tmp"
+
+    cat "$tmp" > "$COLA"
+    rm -f "$tmp"
+
+    fecha=$(date '+%F')
+    hora=$(date '+%H:%M:%S')
+
+    {
+        echo "id_cola,usuario,id_cancion,titulo,artista,inicio,duracion_seg,estado"
+        echo "$id_cola,$usuario,$id_cancion,$titulo,$artista,$fecha $hora,$duracion_seg,reproduciendo"
+    } > "$actual"
+
+    flock -u 200
+
+    nohup /srv/karaoke/bin/finalizar_reproduccion.sh "$id_cola" "$duracion_seg" "$USER" >/dev/null 2>&1 &
+
+    echo "Reproducción simulada iniciada."
+    echo "Canción: $titulo - $artista"
+    echo "Duración: $duracion ($duracion_seg segundos)"
+    echo "Al terminar, se marcará automáticamente como reproducida."
+
+    registrar_evento "ADMIN" "inició reproducción simulada" "$titulo - $artista"
+}

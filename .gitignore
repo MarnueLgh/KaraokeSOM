@@ -8,3 +8,7 @@ reports/*.txt
 *.vdi
 *.vbox
 *.iso
+
+# Reproducción simulada
+playback/*.csv
+!playback/.gitkeep
