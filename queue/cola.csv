@@ -1,2 +1,7 @@
 id_cola,fecha,hora,usuario,id_cancion,titulo,artista,estado
-1,2026-06-08,17:41:11,trebor,1,Hotline Bling,Drake,pendiente
+1,2026-06-08,17:41:11,trebor,1,Hotline Bling,Drake,reproducida
+2,2026-06-15,00:38:33,trebor,13,Diluvio,Rauw Alejandro,reproducida
+3,2026-06-15,01:01:03,trebor,11,Monaco,Bad Bunny,pendiente
+4,2026-06-15,01:01:08,trebor,1,Hotline Bling,Drake,pendiente
+5,2026-06-15,01:01:16,trebor,9,Dakiti,Bad Bunny,pendiente
+6,2026-06-15,01:03:14,trebor,2,One Dance,Drake,pendiente
