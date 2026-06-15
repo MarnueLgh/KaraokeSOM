@@ -1,0 +1,126 @@
+#!/bin/bash
+
+source /srv/karaoke/lib/funciones.sh
+
+azul="\033[38;5;75m"
+gris="\033[38;5;245m"
+blanco="\033[97m"
+rojo="\033[38;5;203m"
+verde="\033[38;5;120m"
+reset_color="\033[0m"
+
+cleanup_terminal() {
+    tput cnorm 2>/dev/null
+    stty echo 2>/dev/null
+    clear
+}
+
+pausa() {
+    echo
+    read -rp "Presiona ENTER para continuar..." _
+}
+
+mostrar_menu_admin() {
+    clear
+
+    echo -e "${gris}     ┌──────────────────────────────────────────────────────┐${reset_color}"
+    echo -e "${gris}     │${reset_color} ${azul}KARAOKE - PANEL ADMINISTRADOR${reset_color}                      ${gris}│${reset_color}"
+    echo -e "${gris}     ├──────────────────────────────────────────────────────┤${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}1${reset_color}. Ver catálogo                                      ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}2${reset_color}. Buscar canción                                    ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}3${reset_color}. Agregar canción                                   ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}4${reset_color}. Desactivar canción                                ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}5${reset_color}. Eliminar canción                                  ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}6${reset_color}. Ver letra de canción                              ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}7${reset_color}. Editar letra de canción                           ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}8${reset_color}. Ver cola                                          ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${verde}9${reset_color}. Ver sala en vivo                                   ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${verde}10${reset_color}. Iniciar sala automática                          ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${rojo}11${reset_color}. Detener sala automática                           ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}12${reset_color}. Marcar canción como reproducida                 ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}13${reset_color}. Generar reportes                                ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}14${reset_color}. Ver reportes existentes                         ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${blanco}15${reset_color}. Ver bitácoras                                   ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color} ${rojo}16${reset_color}. Salir                                             ${gris}│${reset_color}"
+    echo -e "${gris}     └──────────────────────────────────────────────────────┘${reset_color}"
+    echo
+}
+
+registrar_evento "ADMIN" "entró al panel administrativo" "-"
+
+while true; do
+    mostrar_menu_admin
+    read -rp "Selecciona una opción: " opcion
+
+    case "$opcion" in
+        1)
+            mostrar_catalogo
+            pausa
+            ;;
+        2)
+            buscar_cancion
+            pausa
+            ;;
+        3)
+            agregar_cancion
+            pausa
+            ;;
+        4)
+            desactivar_cancion
+            pausa
+            ;;
+        5)
+            eliminar_cancion
+            pausa
+            ;;
+        6)
+            ver_letra_cancion
+            pausa
+            ;;
+        7)
+            editar_letra_cancion
+            pausa
+            ;;
+        8)
+            ver_cola
+            pausa
+            ;;
+        9)
+            unirse_sala
+            pausa
+            ;;
+        10)
+            iniciar_sala
+            pausa
+            ;;
+        11)
+            detener_sala
+            pausa
+            ;;
+        12)
+            marcar_reproducida
+            pausa
+            ;;
+        13)
+            /srv/karaoke/bin/generar_reportes.sh
+            pausa
+            ;;
+        14)
+            ver_reportes
+            pausa
+            ;;
+        15)
+            ver_logs
+            pausa
+            ;;
+        16|q|Q)
+            registrar_evento "ADMIN" "salió del panel administrativo" "-"
+            cleanup_terminal
+            exit 0
+            ;;
+        *)
+            echo "Opción inválida."
+            pausa
+            ;;
+    esac
+done

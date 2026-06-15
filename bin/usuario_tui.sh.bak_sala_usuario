@@ -13,8 +13,6 @@ azul="\033[38;5;75m"
 gris="\033[38;5;245m"
 blanco="\033[97m"
 amarillo="\033[38;5;214m"
-verde="\033[38;5;120m"
-rojo="\033[38;5;203m"
 reset_color="\033[0m"
 
 dibujar_header() {
@@ -27,7 +25,7 @@ dibujar_header() {
     echo -e "${blanco}        ██║  ██╗██║  ██║██║  ██║██║  ██║╚██████╔╝██║  ██╗███████╗${reset_color}"
     echo -e "${blanco}        ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝${reset_color}"
     echo
-    echo -e "                                 ${azul}Usuario${reset_color}"
+    echo -e "                         ${azul}Usuario${reset_color}"
     echo
     echo -e "${gris}     ┌────────────────────────────────────────────────────────────┐${reset_color}"
 }
@@ -40,24 +38,13 @@ dibujar_footer() {
 }
 
 menu_usuario() {
-    local estado_sala color_sala
-
-    if sala_esta_activa; then
-        estado_sala="ACTIVA"
-        color_sala="$verde"
-    else
-        estado_sala="INACTIVA"
-        color_sala="$rojo"
-    fi
-
     dibujar_header
     echo -e "${gris}     │${reset_color}  ${azul}1${reset_color}. Ver catálogo completo                                  ${gris}│${reset_color}"
     echo -e "${gris}     │${reset_color}  ${azul}2${reset_color}. Buscar canción                                         ${gris}│${reset_color}"
     echo -e "${gris}     │${reset_color}  ${azul}3${reset_color}. Solicitar canción                                      ${gris}│${reset_color}"
     echo -e "${gris}     │${reset_color}  ${azul}4${reset_color}. Ver cola de reproducción                               ${gris}│${reset_color}"
     echo -e "${gris}     │${reset_color}  ${azul}5${reset_color}. Ver letra de canción                                   ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color}  ${azul}6${reset_color}. Unirse a sala en vivo ${color_sala}[$estado_sala]${reset_color}                       ${gris}│${reset_color}"
-    echo -e "${gris}     │${reset_color}  ${azul}7${reset_color}. Salir                                                  ${gris}│${reset_color}"
+    echo -e "${gris}     │${reset_color}  ${azul}6${reset_color}. Salir                                                  ${gris}│${reset_color}"
     dibujar_footer
     read -rp "        Selecciona una opción: " opcion
 }
@@ -87,18 +74,10 @@ while true; do
             ver_letra_cancion
             pausa
             ;;
-        6)
-            unirse_sala
-            pausa
-            ;;
-        7|q|Q)
+        6|q|Q)
             registrar_evento "INFO" "salió del sistema" "-"
             cleanup_terminal
             exit 0
-            ;;
-        *)
-            echo "Opción inválida."
-            pausa
             ;;
     esac
 done

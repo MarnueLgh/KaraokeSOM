@@ -2,8 +2,13 @@ id_cola,fecha,hora,usuario,id_cancion,titulo,artista,estado
 1,2026-06-08,17:41:11,trebor,1,Hotline Bling,Drake,reproducida
 2,2026-06-15,00:38:33,trebor,13,Diluvio,Rauw Alejandro,reproducida
 3,2026-06-15,01:01:03,trebor,11,Monaco,Bad Bunny,reproducida
-4,2026-06-15,01:01:08,trebor,1,Hotline Bling,Drake,pendiente
-5,2026-06-15,01:01:16,trebor,9,Dakiti,Bad Bunny,pendiente
-6,2026-06-15,01:03:14,trebor,2,One Dance,Drake,pendiente
-7,2026-06-15,01:15:31,trebor,7,Don't Start Now,Dua Lipa,pendiente
-8,2026-06-15,01:26:41,trebor,8,Levitating,Dua Lipa,pendiente
+4,2026-06-15,01:01:08,trebor,1,Hotline Bling,Drake,reproducida
+5,2026-06-15,01:01:16,trebor,9,Dakiti,Bad Bunny,reproducida
+6,2026-06-15,01:03:14,trebor,2,One Dance,Drake,reproducida
+7,2026-06-15,01:15:31,trebor,7,Don't Start Now,Dua Lipa,reproducida
+8,2026-06-15,01:26:41,trebor,8,Levitating,Dua Lipa,reproducida
+9,2026-06-15,02:50:51,trebor,1,Hotline Bling,Drake,reproducida
+10,2026-06-15,02:50:57,trebor,2,One Dance,Drake,reproduciendo
+11,2026-06-15,02:51:00,trebor,3,Last Nite,The Strokes,reproduciendo
+12,2026-06-15,02:51:05,trebor,4,Reptilia,The Strokes,reproduciendo
+13,2026-06-15,02:51:08,trebor,5,Sorry,Justin Bieber,reproduciendo
